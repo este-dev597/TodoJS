@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+<script>
+
+var cronometro;
+var contador_s = 0;
+var contador_m = 0;
+
+
+    function detenerse() {
+        clearInterval(cronometro);
+    }
+
+    function carga() {
+
+        s = document.getElementById('segundos');
+        m = document.getElementById('minutos');
+
+
+        cronometro = setInterval(
+            function(){
+                if(contador_s == 60) {
+                    contador_s = 0;
+                    contador_m++;
+                    m.innerHTML = contador_m;
+                    if(contador_m == 0) {
+                        contador_m = 0;
+                    }
+                }
+
+                s.innerHTML = contador_s;
+                contador_s++;
+                
+
+            }
+            ,1000);
+    }
+
+</script>
+
+</head>
+<body onload="carga()">
+
+    <p>
+        <span id="minutos">0</span>:<span id="segundos">0</span>
+    </p>
+    <input type="button" onclick="detenerse()" value="detenerse">
+    <input type="button" onclick="carga()" value="seguir">
+
+</body>
+</html>

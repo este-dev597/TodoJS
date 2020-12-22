@@ -1,0 +1,161 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #fff;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.encierro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.abrete {
+    padding: 0 20px;
+    height: 40px;
+    line-height: 40px;
+    border: none;
+    color: #fff;
+    background: #5e7;
+    border-radius: 3px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition: .3s ease all;
+}
+
+.abrete:hover {
+    background: rgba(52, 228, 17, 0.897);
+}
+
+.aparece {
+    background: rgba(0, 0, 0, .3);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+}
+
+.aparece.active {
+    visibility: visible;
+}
+
+.pum {
+    background: #f8f8f8;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, .3);
+    border-radius: 3px;
+    font-family: 'Montserrat', sans-serif;
+    padding: 20px;
+    text-align: center;
+    width: 600px;
+
+    transition: .3s ease all;
+    transform: scale(0.7);
+    opacity: 0;
+}
+
+.pum .cerrar {
+    font-size: 16px;
+    line-height: 16px;
+    display: block;
+    text-align: right;
+    transition: .3s ease all;
+    color: #bbbbbb;
+}
+
+.pum .cerrar:hover {
+    color: #000;
+}
+
+.pum h3 {
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    opacity: 0;
+}
+
+.pum h4 {
+    font-size: 26px;
+    font-weight: 300;
+    margin-bottom: 40px;
+    opacity: 0;
+}
+
+.pum form .contenedor-inputs {
+    opacity: 0;
+}
+
+.pum form .contenedor-inputs input {
+    width: 100%;
+    margin-bottom: 20px;
+    height: 52px;
+    font-size: 18px;
+    line-height: 52px;
+    text-align: center;
+    border: 1px solid #bbbbbb;
+}
+
+.pum form .btn-submit {
+    padding: 0 20px;
+    height: 40px;
+    line-height: 40px;
+    border: none;
+    color: #fff;
+    background: hsla(113, 83%, 40%, 0.747);
+    border-radius: 3px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition: .3s ease all;
+}
+
+.pum form .btn-submit:hover {
+    background: hsla(120, 100%, 68%, 0.651);
+}
+
+
+/* Animaciones */
+
+.pum.active {opacity: 1; transform: scale(1)}  /*  Efecto que parece que el popup cresca y disminuya cuando se abre y se cierre, respectivamente  */
+.pum.active h3 {animation: entradaTitulo .8s ease .5s forwards;}  /* El h3 tenga una animación que dure 3s, pero demore 0.5s en que tenga efecto - forwards(el elemento h3 se va a quedar con sus ultimas propiedades(opacity: 1;))*/
+.pum.active h4 {animation: entradaSubTitulo .8s ease .5s forwards;}
+.pum.active .contenedor-inputs {animation: entradaInputs 1s ease 1s forwards;}
+
+@keyframes entradaTitulo {
+    from {
+        transform: translateY(-25px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes entradaSubTitulo {
+    from {
+        transform: translateY(25px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes entradaInputs {
+    form {opacity: 0;}
+    to {opacity: 1;}
+}
+
