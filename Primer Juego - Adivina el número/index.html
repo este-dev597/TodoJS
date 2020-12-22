@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <title>Number guessing game</title>
+
+    <style>
+      html {
+        font-family: sans-serif;
+      }
+
+      body {
+        width: 50%;
+        max-width: 800px;
+        min-width: 480px;
+        margin: 0 auto;
+      }
+
+      .lastResult {
+        color: white;
+        padding: 3px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Number guessing game</h1>
+
+    <p>We have selected a random number between 1 and 100. See if you can guess it in 10 turns or fewer. We'll tell you if your guess was too high or too low.</p>
+
+    <div class="form">
+      <label for="guessField">Guess the number:  </label><input type="text" id="guessField" class="guessField">
+      <input type="submit" value="Submit guess" class="guessSubmit">
+    </div>
+
+    <div class="resultParas">
+      <p class="guesses"></p>
+      <p class="lastResult"></p>
+      <p class="lowOrHi"></p>
+    </div>
+
+    <script>
+
+      let randomNumber = Math.floor(Math.random()*100) + 1;
+
+
+      //Las siguientes 3 const sirven para almacenar una referencia a los párrafos de resultados en nuestro HTML
+                    // -Y se usarán para insertar valores en los párrafos más adelante en el código
+      const guesses = document.querySelector('.guesses');
+      const lastResult = document.querySelector('.lastResult');
+      const lowOrHi = document.querySelector('.lowOrHi');
+
+      // Las siguientes dos constantes almacenan referencias a la entrada de texto y al botón "Enviar" del formulario, 
+                   // -Y se utilizan para controlar las respuestas del jugador más adelante.
+      const guessSubmit = document.querySelector('.guessSubmit');
+      const guessField = document.querySelector('.guessField');
+
+      // Nuestras dos variables finales almacenan un conteo de intentos desde 1 (que se usa para tener un registro de cuántos intentos ha hecho el jugador), y una referencia al botón de reinicio
+      let guessCount = 1;
+      let resetButton;
+      // Esta línea usa el método focus() para colocar automáticamente el cursor en el campo de texto <input> tan pronto como se cargue la página,
+      guessField.focus();
+
+      function checkGuess() { 
+          let userGuess = Number(guessField.value); // Establece su valor al valor actual ingresado dentro del campo de texto. También ejecutamos este valor a través del constructor Number() integrado, solo para asegurarnos de que el valor definitivamente sea un número.
+          if (guessCount === 1) {  // La prueba está verificando si la variable guessCount es igual a 1 (es decir, si este es el primer intento del jugador o no):
+              guesses.textContent = 'Intentos anteriores: '; // Si es así, hacemos que el contenido del texto del párrafo de intentos sea igual a "Intentos previos: ". Si no, no lo hacemos.
+          }
+          guesses.textContent += userGuess + ' '; // Agrega el valor actual de userGuess al final del párrafo guesses, más un espacio en blanco para que haya un espacio entre cada intento mostrado.
+
+          if(userGuess === randomNumber) { // Verifica si la respuesta del jugador es igual al randomNumber establecido al comienzo de nuestro JavaScript.
+              lastResult.textContent = '¡Felicidades! ¡Lo adivinaste en ' + guessCount + ' itentos!'; // Si es así, el jugador ha adivinado correctamente y ha ganado el juego, por lo tanto mostramos al jugador un mensaje de felicitación 
+              lastResult.style.backgroundColor = 'green';  // con un bonito color verde
+              lowOrHi.textContent = ''; // borramos el contenido del cuadro de información de intentos Low/High
+              setGameOver(); // ejecutamos una función llamada setGameOver()
+          } else if (guessCount === 10) { // Comprueba si este intento es el último turno del jugador.
+              lastResult.textContent = '!!!Fin del juego!!!';
+              setGameOver();
+          } else { //  Contiene código que solo se ejecuta si ninguna de las otras dos pruebas devuelve true (es decir, el jugador no acertó, pero todavía le quedan intentos)
+              lastResult.textContent = '¡Incorrecto!';
+              lastResult.style.backgroundColor = 'red';
+              if(userGuess < randomNumber) {
+                  lowOrHi.textContent = '¡Tú número es muy bajo!';
+              } else if(userGuess > randomNumber) {
+                  lowOrHi.textContent = '¡Tú número es muy grande!';
+              }
+          }
+
+          guessCount++; // Agregamos 1 a la variable guessCount para que el jugador use su turno (++ es una operación de incremento — incrementar en 1)
+          guessField.value = ''; // Vaciamos el valor del campo de texto
+          guessField.focus(); // Enfocándolo de nuevo, listo para ingresar el próximo intento.
+      }
+
+      guessSubmit.addEventListener('click', checkGuess); // Aquí estamos agregando un escucha de eventos al botón guessSubmit. Este es un método toma dos valores de entrada (llamados argumentos) — el tipo de evento que queremos escuchar (en este caso, click) como una cadena, y el código que queremos ejecutar cuando ocurra el evento (en este caso la función checkGuess()). Ten en cuenta que no es necesario especificar los paréntesis al escribirlo dentro de addEventListener().
+
+      function setGameOver() {
+        /*
+              Las dos primeras líneas deshabilitan el campo de texto y el botón fijando sus propiedades disabled en true.
+            Esto es necesario, porque si no lo hiciéramos,
+            el jugador podría seguir enviando más intentos aunque el juego hubiera terminado, lo cual estropearía las cosas.
+        */
+          guessField.disabled = true;
+          guessSubmit.disabled = true;
+
+        /*
+            Las siguientes tres líneas generan un nuevo elemento <button>,
+            establecen su etiqueta de texto en "Iniciar nuevo juego" y 
+            lo añaden al final de nuestro HTML existente.
+        */
+          resetButton = document.createElement('button');
+          resetButton.textContent = 'Iniciar nuevo juego';
+          document.body.append(resetButton);
+
+        /*  
+           La última línea establece un escucha de eventos en nuestro nuevo botón para que cuando se haga clic en él,
+           se ejecute una función llamada resetGame().     
+        */
+          resetButton.addEventListener('click', resetGame);
+      }
+
+      function resetGame() {
+          guessCount = 1; // Vuelve a poner guessCount en 1
+
+          /*
+            Vacía todo el texto de los párrafos de información. 
+            Seleccionamos todos los párrafos dentro de <div class="resultParas"></div>,
+            luego recorremos cada uno, 
+            configurando su textContent en '' (una cadena vacía).
+          */  
+          const resetParas = document.querySelectorAll('.resultParas p');   //Este código crea una variable que contiene una lista de todos los párrafos dentro de <div class="resultParas"> usando el método querySelectorAll(), luego recorre cada uno de ellos, eliminando el texto contenido a su paso.
+          for (let i = 0; i < resetParas.length; i++) {                     
+              resetParas[i].textContent = '';                               
+          }
+
+          // Elimina de nuestro código el botón de reinicio.
+          resetButton.parentNode.removeChild(resetButton);
+
+          //Habilita los elementos del formulario, vacía y enfoca el campo de texto, listo para ingresar un nuevo intento.
+          guessField.disabled = false;
+          guessSubmit.disabled = false;
+          guessField.value = '';
+          guessField.focus();
+
+          //Elimina el color de fondo del párrafo lastResult.
+          lastResult.style.backgroundColor = 'white';
+
+          //Genera un nuevo número al azar ¡para que no vuelvas a adivinar el mismo número!.
+          randomNumber = Math.floor(Math.random() * 100) + 1; 
+      }
+
+    </script>
+  </body>
+</html>
