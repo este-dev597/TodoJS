@@ -1,0 +1,6 @@
+Operadores lógicos: AND, OR y NOT
+        && — AND;  le permite encadenar dos o más expresiones para que todas ellas se tengan que evaluar individualmente  true para que expresión entera retorne true.
+        || — OR; le permite encadenar dos o más expresiones para que una o más de ellas se tengan que evaluar individualmente true para que expresión entera retorne true
+        El último tipo de operador lógico, NOT, es expresado con el operador !, puede ser usado para negar una expresión.
+
+        

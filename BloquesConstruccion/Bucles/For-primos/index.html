@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numeros primos</title>
+</head>
+<body>
+    
+    <label for="number">Enter number: </label>
+    <input id="number" type="text">
+    <button>Generar los primos</button>
+  
+    <p>Output: </p>
+
+<script>
+    const para = document.querySelector('p');
+    const input = document.querySelector('input');
+    const btn = document.querySelector('button');
+
+    btn.addEventListener('click', function(){
+        para.textContent = 'Output: ';
+        let num = input.value;
+        input.value = '';
+        input.focus();
+
+        for(let i=2; i<=num; i++){
+            let prim = 0;
+            for(let k=1; k<=i; k++){
+                if(i%k==0){
+                    prim = prim + 1;
+                }
+            }
+            if(prim==2){
+                para.textContent += i + ' ';
+            }
+        }
+
+    });
+
+</script>
+
+</body>
+</html>
