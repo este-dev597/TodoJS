@@ -1,0 +1,21 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: rgb(110, 186, 209);
+}
+
+div {
+    width: 350px;
+    height: 300px;
+    border: 2.45px dashed blue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
